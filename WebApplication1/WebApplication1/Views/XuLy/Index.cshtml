@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="~/css/main.css"/>
+    </head>
+    <body>
+        <h2>Bài toán cái túi</h2>
+        <form class="form-inline" asp-controller="" asp-action="">
+            <div class="content">
+                <div class="input">
+                    <div class="form-group">
+                        <label class="sr-only">Trọng lượng giới hạn:</label>
+                        <input type="number" class="form-control" id="trongluong" name="txttrongluong" placeholder="Trong luong">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only">Số đồ vật:</label>
+                        <input type="number" class="form-control" id="soluong" placeholder="So luong" name="txtsoluong">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btnOK">OK</button>
+                    <div id="vatco" class="vatco">
+
+                    </div>
+                    <button type="button" class="btn btn-default" id="submit">Submit</button>
+                </div>
+                <div class="output">
+                    <div id="table-ketqua">
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </body>
+</html>
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+    let listtrongluong = [];
+    let listgiatri = [];
+    let sldiv = 0;
+    let mangtl;
+
+
+    $("#btnOK").click(function () {
+        let sl = $("#soluong").val();
+        sldiv = parseInt(sl);
+        //let listrongluong = [];
+        for (let i = 0; i < sl; i++) {
+            $("#vatco").append(`<h5>${i}</h5>`);
+            $("#vatco").append(`<h7>Trọng lượng của vật:</h7>`);
+            $("#vatco").append(`<input type="number" class="form-control tlvat${i}">`);
+            $("#vatco").append(`<h7>Giá trị của vật:</h7>`);
+            $("#vatco").append(`<input type="number" class="form-control giatri${i}">`);
+        }
+        //console.log(listrongluong);
+    });
+    $("#submit").click(function () {
+                for (let i = 0; i < sldiv; i++) {
+            listtrongluong.push(parseInt($(`.tlvat${i}`).val()));
+            listgiatri.push(parseInt($(`.giatri${i}`).val()));
+            //let j = 0;
+            //let listtrongluong = [];
+            //let listgiatri = [];
+            //listtrongluong.push($("#tlvat").val());
+        };
+        mangtl = JSON.stringify(listtrongluong);
+        manggt = JSON.stringify(listgiatri);
+
+        $.ajax({
+                url: "/XuLy/GetAllValue",
+                type: "POST",
+                data: {
+                    "mangtl": mangtl,
+                    "manggt": manggt,
+                    "txttrongluong": parseInt($("#trongluong").val()),
+                    "txtsoluong": parseInt($("#soluong").val())
+                },
+            success: function (data) {
+                //console.log(data);
+                    $("#table-ketqua").html(data);
+                },
+                error: function (data) {
+                    alert("Error: " + data);
+                }
+        });
+
+        //$.ajax({
+        //        url: "/XuLy/GetTable",
+        //        type: "POST",
+        //        //data: {
+        //        //    "mangtl": mangtl,
+        //        //    "manggt": manggt,
+        //        //    "txttrongluong": parseInt($("#trongluong").val()),
+        //        //    "txtsoluong": parseInt($("#soluong").val())
+        //        //},
+        //        success: function (data) {
+        //          $("#table").html(data);
+        //        },
+        //        error: function (data) {
+        //            alert("Error: " + data);
+        //        }
+        //});
+        @*<table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Những vật được chọn</th>
+                <th>Tổng giá trị túi</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @if(ViewBag.VatDuocChon != null) {
+                        @foreach (var vat in ViewBag.VatDuocChon)
+                        {
+                            @vat
+                        }
+                    }
+                </tr>
+                <tr>
+                    @ViewBag.Tong;
+                </tr>
+            </tbody>
+          </table>*@
+    })
+
+
+
+    </script>
+
+    @*<form asp-controller="XuLy" asp-action="UploadFile" method="post" enctype="multipart/form-data" class="form-inline">
+            <h5>Mở file: </h5>
+            <input type="file" name="file"/>
+            <button type="submit">Đọc file</button>
+        </form>*@
