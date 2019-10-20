@@ -14,22 +14,43 @@ namespace WebApplication1.Controllers
 {
     public class XulyController : Controller
     {
-        int[] listtltemp = new int[100];
-        int[] listgttemp = new int [100];
-        int[] listtl = new int[100];
-        int[] listgt = new int[100];
-        int GT, W=0, n=0;
-        int[,] a;
-        string mangtmp;
-        Timing timing = new Timing();
-        //Stopwatch stopwatch = new Stopwatch();
+        int[] listtltemp = new int[100]; //Mảng trọng lượng tạm
+        int[] listgttemp = new int [100]; //Mảng giá trị tạm
+        int[] listtl = new int[100]; //Mảng trọng lượng (bắt đầu từ 1)
+        int[] listgt = new int[100]; //Mảng giá trị (bắt đầu từ 1)
+        int GT, W=0, n=0; //Tổng giá trị && tổng trọng lượng && số lượng vật
+        int[,] a; //Bảng tính toán giá trị của quy hoạch động
+        string mangtmp; //chuỗi chứa các vật được chọn
 
-        public int max(int a, int b)
+        public IActionResult Index()
         {
-            return (a > b) ? a : b;
+            return View("Index");
+        }
+
+        //Quy hoạch động
+        public IActionResult DynamicPlanningAlgorithm(string mangtl, string manggt, int txttrongluong, int txtsoluong)
+        {
+            var watch = Stopwatch.StartNew();
+
+            W = txttrongluong;
+            n = txtsoluong;
+            a = new int[txtsoluong + 1, txttrongluong + 1];
+
+            UpdateArray(mangtl, manggt, txttrongluong, txtsoluong);
+            RearrangeArray();
+            HandlingDynamicPlanning();
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            ViewBag.Tong = GT;
+            ViewBag.VatDuocChon = mangtmp;
+            ViewBag.Milisecond = elapsedMs;
+
+            return PartialView("pResultTable");
         }
         
-        public IActionResult GetTable()
+        public void HandlingDynamicPlanning()
         {
             for (int i = 0; i <= n; i++)
             {
@@ -47,7 +68,7 @@ namespace WebApplication1.Controllers
                 {
                     if (j - listtl[i] >= 0)
                     {
-                        a[i, j] = max(a[i - 1, j], a[i - 1, j - listtl[i]] + listgt[i]);
+                        a[i, j] = Max(a[i - 1, j], a[i - 1, j - listtl[i]] + listgt[i]);
                     }
                     else
                     {
@@ -55,6 +76,7 @@ namespace WebApplication1.Controllers
                     }
                 }
             }
+
             int tmp1 = n, tmp2 = W, tmp = 0;
             while ((tmp1 != 0) && (tmp2 != 0))
             {
@@ -67,41 +89,13 @@ namespace WebApplication1.Controllers
                 }
                 tmp1--;
             }
-            ViewBag.Tong = GT;
-            ViewBag.VatDuocChon = mangtmp;
-            //stopwatch.Stop();
-            //TimeSpan ts = stopwatch.Elapsed;
-            ////string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
-            ////ViewBag.Time = elapsedTime;
-            //ViewBag.Time = ts;
-            timing.Stop();
-
-            Console.WriteLine($"\r\nExecution time: {timing.Duration.Ticks} (ticks) = {timing.Duration.Milliseconds} (ms)");
-            var time = timing.Duration.Ticks;
-            var second = timing.Duration.Milliseconds;
-            ViewBag.Time = time;
-            ViewBag.Second = second;
-            return PartialView("table");
         }
-        public IActionResult index(string txttrongluong,string txtsoluong)
-        {
-            //stopwatch.Start();
-            
-            timing.Start();
-            return View("index");
-        }
+        
 
-        public IActionResult GetAllValue(string mangtl, string manggt, int txttrongluong, int txtsoluong)
+        public void UpdateArray(string mangtl, string manggt, int txttrongluong, int txtsoluong)
         {
             listtltemp = JsonConvert.DeserializeObject<int[]>(mangtl);
             listgttemp = JsonConvert.DeserializeObject<int[]>(manggt);
-            a = new int[txtsoluong + 1, txttrongluong + 1];
-            RearrangeArray();
-
-            this.W = txttrongluong;
-            this.n = txtsoluong;
-
-            return GetTable();
         }
 
         public void RearrangeArray()
@@ -115,6 +109,11 @@ namespace WebApplication1.Controllers
             {
                 listgt[i + 1] = listgttemp[i];
             }
+        }
+
+        public int Max(int a, int b)
+        {
+            return (a > b) ? a : b;
         }
     }
 }

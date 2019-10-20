@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+    <h5 class="card-title">Kết quả</h5>
+
+    <table class="mb-0 table" id="table-ketqua">
+        <thead>
+            <tr>
+                <th>Những vật được chọn</th>
+                <th>Tổng giá trị túi</th>
+                <th>Thời gian chạy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @foreach (char vat in ViewBag.VatDuocChon)
+                    {
+                        @vat
+                    }
+                </td>
+                <td>
+                    @ViewBag.Tong
+                </td>
+                <td>
+                    @ViewBag.Milisecond ms
+                </td>
+            </tr>
+        </tbody>
+    </table>
