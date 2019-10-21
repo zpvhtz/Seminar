@@ -29,12 +29,14 @@
                     <div>
                         <form class="form-inline">
                             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                <label for="exampleEmail22" class="mr-sm-2">Trọng lượng túi</label><input id="trongluong" name="txttrongluong" placeholder="Trọng lượng túi" type="number" class="form-control">
+                                <label for="exampleEmail22" class="mr-sm-2">Trọng lượng túi</label><input id="trongluong" name="txttrongluong" placeholder="Trọng lượng túi" type="number" class="form-control" required>
                             </div>
                             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                <label for="examplePassword22" class="mr-sm-2">Số lượng vật</label><input id="soluong" name="txtsoluong" placeholder="Số lượng vật" type="number" class="form-control">
+                                <label for="examplePassword22" class="mr-sm-2">Số lượng vật</label><input id="soluong" name="txtsoluong" placeholder="Số lượng vật" type="number" class="form-control" required>
                             </div>
                             <button id="btnOK" class="btn btn-primary">OK</button>
+                            &nbsp;
+                            <button id="btnRandom" class="btn btn-info">Random</button>
                         </form>
                     </div>
                 </div>
@@ -56,6 +58,17 @@
             @*Result*@
             <div class="main-card mb-3 card" id="row-ketqua">
 
+            </div>
+
+            <div class="main-card mb-3 card">
+                <div class="panel panel-default">
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div id="morris-area-chart"></div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
             </div>
         </div>
     </div>
@@ -113,6 +126,28 @@
             data: {
                 "mangtl": mangtl,
                 "manggt": manggt,
+                "txttrongluong": parseInt($("#trongluong").val()),
+                "txtsoluong": parseInt($("#soluong").val())
+            },
+            success: function (data) {
+                $("#row-ketqua").html(`
+                    <div class="card-body" id="table-ketqua">
+                        ${data}
+                    </div>`);
+            },
+            error: function (data) {
+                alert("Error: " + data);
+            }
+        });
+    });
+
+    $("#btnRandom").click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/XuLy/RandomDynamicPlanningALgorithm",
+            type: "POST",
+            data: {
                 "txttrongluong": parseInt($("#trongluong").val()),
                 "txtsoluong": parseInt($("#soluong").val())
             },

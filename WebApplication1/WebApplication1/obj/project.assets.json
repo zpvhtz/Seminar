@@ -12533,20 +12533,20 @@
   },
   "packageFolders": {
     "C:\\Users\\hieut\\.nuget\\packages\\": {},
-    "D:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectUniqueName": "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
       "projectName": "WebApplication1",
-      "projectPath": "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectPath": "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
       "packagesPath": "C:\\Users\\hieut\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\obj\\",
+      "outputPath": "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "D:\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
