@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj": {}
+    "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj": {
+    "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+        "projectUniqueName": "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
         "projectName": "WebApplication1",
-        "projectPath": "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+        "projectPath": "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
         "packagesPath": "C:\\Users\\hieut\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\obj\\",
+        "outputPath": "C:\\Projects\\Seminar\\WebApplication1\\WebApplication1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
@@ -55,7 +55,6 @@
               "version": "[2.1.2, )"
             },
             "Microsoft.NETCore.App": {
-              "suppressParent": "All",
               "target": "Package",
               "version": "[2.1.0, )",
               "autoReferenced": true

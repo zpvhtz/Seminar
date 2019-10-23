@@ -22,20 +22,35 @@ namespace WebApplication1.Controllers
         int[,] a; //Bảng tính toán giá trị của quy hoạch động
         string mangtmp; //chuỗi chứa các vật được chọn
         List<Objet> objets = new List<Objet>(); //Danh sách các vật (gồm trọng lượng và giá trị)
+        Stopwatch watch = new Stopwatch();
+        List<long> timeList = new List<long>(); //Mảng chứa thời gian
+        List<int> numberOfBags = new List<int>(); //Mảng chứa số lượng túi
 
         public IActionResult Index()
         {
             return View("Index");
         }
 
-        public IActionResult RandomDynamicPlanningALgorithm(int txttrongluong, int txtsoluong)
+        public IActionResult RandomDynamicPlanningAlgorithm(int txttrongluong, int txtsoluong)
         {
-            var watch = Stopwatch.StartNew();
+            watch = Stopwatch.StartNew();
+            timeList.Add(0);
+            numberOfBags.Add(0);
 
             W = txttrongluong;
             n = txtsoluong;
             a = new int[txtsoluong + 1, txttrongluong + 1];
 
+            int sltemp;
+            int.TryParse(Math.Round(Math.Sqrt(double.Parse(int.MaxValue.ToString())), 0).ToString(), out sltemp); //random W cho túi lớn
+            //W = sltemp;
+
+            //for(int i = 1; i <= 10000; i *= 10)
+            //{
+            //    RandomArray(W, i);
+            //    RearrangeArray();
+            //    HandlingDynamicPlanning();
+            //}
             RandomArray(txttrongluong, txtsoluong);
             RearrangeArray();
             HandlingDynamicPlanning();
@@ -52,10 +67,19 @@ namespace WebApplication1.Controllers
             return PartialView("pResultTable");
         }
 
+        public string RandomDynamicPlanningAlgorithmResult(int txttrongluong, int txtsoluong)
+        {
+            Console.WriteLine(objets);
+            Console.WriteLine(mangtmp);
+            Console.WriteLine(watch);
+            return "a";
+        }
+
         //Quy hoạch động
         public IActionResult DynamicPlanningAlgorithm(string mangtl, string manggt, int txttrongluong, int txtsoluong)
         {
             var watch = Stopwatch.StartNew();
+            Random rnd = new Random();
 
             W = txttrongluong;
             n = txtsoluong;
