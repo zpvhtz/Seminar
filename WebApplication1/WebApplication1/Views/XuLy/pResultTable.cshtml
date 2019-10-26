@@ -1,24 +1,39 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+    @{
+        int sltui = ViewBag.SoLuong.Count;
+    }
     <h5 class="card-title">Kết quả</h5>
 
-    <table class="mb-0 table" id="table-ketqua">
+    <table class="mb-0 table table-bordered" id="table-ketqua">
         <thead>
             <tr>
-                <th>Danh sách vật</th>
-                <th>Những vật được chọn</th>
-                <th>Tổng giá trị túi</th>
-                <th>Thời gian chạy</th>
+                <th width="40%">Danh sách vật</th>
+                <th width="40%">Những vật được chọn</th>
+                <th width="10%">Tổng giá trị túi</th>
+                <th width="10%">Thời gian chạy</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    @foreach(var item in ViewBag.DanhSachVat)
-                    {
-                    <span>(@item.Weight, @item.Value)&nbsp;</span>
-                    }
+                    @*@foreach(var item in ViewBag.DanhSachVat)
+        {
+        <span>(@item.Weight, @item.Value)&nbsp;</span>
+        }*@
+                    <div class="card-body">
+                        <div class="scroll-area-md">
+                            <div class="scrollbar-container ps--active-y">
+                                <p>
+                                    @foreach(var item in ViewBag.DanhSachVat)
+                                    {
+                                        <span>(@item.Weight, @item.Value)&nbsp;</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </td>
                 <td>
                     @foreach (char vat in ViewBag.VatDuocChon)
@@ -30,49 +45,60 @@
                     @ViewBag.Tong
                 </td>
                 <td>
-                    @(
-                    ViewBag.Milisecond * 1000) &micro;s
+                    @for(int i=0; i < sltui; i++)
+                    {
+                        <p>@ViewBag.SoLuong[i] túi: @(ViewBag.Millisecond[i] * 1000) &micro;s</p>
+                    }
+                    @*@ViewBag.Millisecond[0]
+                    @foreach(var item in ViewBag.Millisecond)
+                    {
+                        <p>@(item * 1000) &micro;s</p>
+                    }*@
                 </td>
             </tr>
         </tbody>
     </table>
 
     <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Gau gau', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
+        var soluongArray = @Html.Raw(Json.Serialize(ViewBag.SoLuong));
+        var thoigianArray = @Html.Raw(Json.Serialize(ViewBag.Millisecond));
+        thoigianArray = thoigianArray.map(ele => ele * 1000);
+    
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: soluongArray,
+                datasets: [{
+                    label: 'Quy hoạch động',
+                    data: thoigianArray,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
                 }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }
-        }
-    });
+        });
     </script>

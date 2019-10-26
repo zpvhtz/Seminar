@@ -33,46 +33,35 @@ namespace WebApplication1.Controllers
 
         public IActionResult RandomDynamicPlanningAlgorithm(int txttrongluong, int txtsoluong)
         {
-            watch = Stopwatch.StartNew();
-            timeList.Add(0);
-            numberOfBags.Add(0);
-
-            W = txttrongluong;
-            n = txtsoluong;
-            a = new int[txtsoluong + 1, txttrongluong + 1];
-
             int sltemp;
             int.TryParse(Math.Round(Math.Sqrt(double.Parse(int.MaxValue.ToString())), 0).ToString(), out sltemp); //random W cho túi lớn
-            //W = sltemp;
 
-            //for(int i = 1; i <= 10000; i *= 10)
-            //{
-            //    RandomArray(W, i);
-            //    RearrangeArray();
-            //    HandlingDynamicPlanning();
-            //}
-            RandomArray(txttrongluong, txtsoluong);
-            RearrangeArray();
-            HandlingDynamicPlanning();
+            Random rnd = new Random();
+            W = rnd.Next(1, sltemp);
+
+            for (int i = 10; i <= 10000; i *= 10)
+            {
+                watch = Stopwatch.StartNew();
+
+                n = i;
+                a = new int[n + 1, W + 1];
+                RandomArray();
+                RearrangeArray();
+                HandlingDynamicPlanning();
+
+                watch.Stop();
+                timeList.Add(watch.ElapsedMilliseconds);
+                numberOfBags.Add(i);
+            }
             GetAllObjects();
-
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
 
             ViewBag.DanhSachVat = objets;
             ViewBag.Tong = GT;
             ViewBag.VatDuocChon = mangtmp;
-            ViewBag.Milisecond = elapsedMs;
+            ViewBag.SoLuong = numberOfBags;
+            ViewBag.Millisecond = timeList;
 
             return PartialView("pResultTable");
-        }
-
-        public string RandomDynamicPlanningAlgorithmResult(int txttrongluong, int txtsoluong)
-        {
-            Console.WriteLine(objets);
-            Console.WriteLine(mangtmp);
-            Console.WriteLine(watch);
-            return "a";
         }
 
         //Quy hoạch động
@@ -149,17 +138,17 @@ namespace WebApplication1.Controllers
             listgttemp = JsonConvert.DeserializeObject<int[]>(manggt);
         }
 
-        public void RandomArray(int txttrongluong, int txtsoluong)
+        public void RandomArray()
         {
             Random rnd = new Random();
-            listtl = new int[txtsoluong + 1];
-            listgt = new int[txtsoluong + 1];
-            listtltemp = new int[txtsoluong];
-            listgttemp = new int[txtsoluong];            
+            listtl = new int[n + 1];
+            listgt = new int[n + 1];
+            listtltemp = new int[n];
+            listgttemp = new int[n];            
 
-            for(int i = 0; i < txtsoluong; i++)
+            for(int i = 0; i < n; i++)
             {
-                listtltemp[i] = rnd.Next(1, txttrongluong > int.MaxValue ? int.MaxValue : txttrongluong);
+                listtltemp[i] = rnd.Next(1, W > int.MaxValue ? int.MaxValue : W);
                 listgttemp[i] = rnd.Next(1, 1000);
             }
         }
