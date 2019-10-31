@@ -152,12 +152,10 @@
         e.preventDefault();
 
         $.ajax({
-            url: "/XuLy/RandomDynamicPlanningAlgorithm",
+            url: "/XuLy/RandomAllAlgorithm",
             type: "POST",
-            data: {
-                "txttrongluong": parseInt($("#trongluong").val()),
-                "txtsoluong": parseInt($("#soluong").val())
-            },
+            async: true,
+            timeout: 100000000,
             success: function (data) {
                 $("#row-ketqua").html(`
                     <div class="card-body" id="table-ketqua">

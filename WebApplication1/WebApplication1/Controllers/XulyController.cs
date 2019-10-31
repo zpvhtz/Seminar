@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using KnapsackProblem;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,16 +23,38 @@ namespace WebApplication1.Controllers
         int[,] a; //Bảng tính toán giá trị của quy hoạch động
         string mangtmp; //chuỗi chứa các vật được chọn
         List<Objet> objets = new List<Objet>(); //Danh sách các vật (gồm trọng lượng và giá trị)
-        Stopwatch watch = new Stopwatch();
-        List<long> timeList = new List<long>(); //Mảng chứa thời gian
+
+        List<long> dynamicTimeList = new List<long>(); //Mảng chứa thời gian (Dynamic)
+        List<long> greedyTimeList = new List<long>(); //Mảng chứa thời gian (Greedy)
+        List<long> recursiveTimeList = new List<long>(); //Mảng chứa thời gian (Recursive)
         List<int> numberOfBags = new List<int>(); //Mảng chứa số lượng túi
+
+        GreedyAlgorithm greedyAlgorithm = new GreedyAlgorithm();
+        DynamicAlgorithm dynamicAlgorithm = new DynamicAlgorithm();
+        RecursiveAlgorithm recursiveAlgorithm = new RecursiveAlgorithm();
+        Stopwatch watch = new Stopwatch();
 
         public IActionResult Index()
         {
             return View("Index");
         }
 
-        public IActionResult RandomDynamicPlanningAlgorithm(int txttrongluong, int txtsoluong)
+        public IActionResult RandomAllAlgorithm()
+        {
+            RandomAlgorithm();
+
+            ViewBag.DanhSachVat = objets;
+            ViewBag.Tong = GT;
+            ViewBag.VatDuocChon = mangtmp;
+
+            ViewBag.SoLuong = numberOfBags;
+            ViewBag.DynamicTimeList = dynamicTimeList;
+            ViewBag.GreedyTimeList = greedyTimeList;
+            ViewBag.RecursiveTimeList = recursiveTimeList;
+
+            return PartialView("pResultTable");
+        }
+        public void RandomAlgorithm()
         {
             int sltemp;
             int.TryParse(Math.Round(Math.Sqrt(double.Parse(int.MaxValue.ToString())), 0).ToString(), out sltemp); //random W cho túi lớn
@@ -41,94 +64,60 @@ namespace WebApplication1.Controllers
 
             for (int i = 10; i <= 10000; i *= 10)
             {
-                watch = Stopwatch.StartNew();
-
                 n = i;
                 a = new int[n + 1, W + 1];
                 RandomArray();
                 RearrangeArray();
-                HandlingDynamicPlanning();
 
+                //Dynamic (quy hoạch động)
+                watch = Stopwatch.StartNew();
+                dynamicAlgorithm.HandlingDynamicPlanning(W, n, ref a, listtl, listgt, ref mangtmp, ref GT);
                 watch.Stop();
-                timeList.Add(watch.ElapsedMilliseconds);
+                dynamicTimeList.Add(watch.ElapsedMilliseconds);
+                
+
+                //Greedy (tham lam)
+                watch = Stopwatch.StartNew();
+                List<KeyValuePair<int, int>> listResultGreedy = listResultGreedy = greedyAlgorithm.KnapsackGreedyProgramming(listtltemp, listgttemp, W);
+                watch.Stop();
+                greedyTimeList.Add(watch.ElapsedMilliseconds);
+
+                //Recursive (vét cạn)
+                //watch = Stopwatch.StartNew();
+                //int temp = recursiveAlgorithm.KnapSackRecursive(listtltemp, listgttemp, W, i);
+                
+                //watch.Stop();
+                //recursiveTimeList.Add(watch.ElapsedMilliseconds);
+
+                //Lưu sl túi
                 numberOfBags.Add(i);
             }
             GetAllObjects();
-
-            ViewBag.DanhSachVat = objets;
-            ViewBag.Tong = GT;
-            ViewBag.VatDuocChon = mangtmp;
-            ViewBag.SoLuong = numberOfBags;
-            ViewBag.Millisecond = timeList;
-
-            return PartialView("pResultTable");
         }
 
         //Quy hoạch động
-        public IActionResult DynamicPlanningAlgorithm(string mangtl, string manggt, int txttrongluong, int txtsoluong)
-        {
-            var watch = Stopwatch.StartNew();
-            Random rnd = new Random();
+        //public IActionResult DynamicPlanningAlgorithm(string mangtl, string manggt, int txttrongluong, int txtsoluong)
+        //{
+        //    var watch = Stopwatch.StartNew();
+        //    Random rnd = new Random();
 
-            W = txttrongluong;
-            n = txtsoluong;
-            a = new int[txtsoluong + 1, txttrongluong + 1];
+        //    W = txttrongluong;
+        //    n = txtsoluong;
+        //    a = new int[txtsoluong + 1, txttrongluong + 1];
 
-            UpdateArray(mangtl, manggt);
-            RearrangeArray();
-            HandlingDynamicPlanning();
+        //    UpdateArray(mangtl, manggt);
+        //    RearrangeArray();
+        //    HandlingDynamicPlanning();
 
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
+        //    watch.Stop();
+        //    var elapsedMs = watch.ElapsedMilliseconds;
 
-            ViewBag.Tong = GT;
-            ViewBag.VatDuocChon = mangtmp;
-            ViewBag.Milisecond = elapsedMs;
+        //    ViewBag.Tong = GT;
+        //    ViewBag.VatDuocChon = mangtmp;
+        //    ViewBag.DynamicTimeList = elapsedMs;
 
-            return PartialView("pResultTable");
-        }
-        
-        public void HandlingDynamicPlanning()
-        {
-            for (int i = 0; i <= n; i++)
-            {
-                a[i, 0] = 0;
-            }
-
-            for (int j = 1; j <= W; j++)
-            {
-                a[0, j] = 0;
-            }
-
-            for (int i = 1; i <= n; i++)
-            {
-                for (int j = 1; j <= W; j++)
-                {
-                    if (j - listtl[i] >= 0)
-                    {
-                        a[i, j] = Max(a[i - 1, j], a[i - 1, j - listtl[i]] + listgt[i]);
-                    }
-                    else
-                    {
-                        a[i, j] = a[i - 1, j];
-                    }
-                }
-            }
-
-            int tmp1 = n, tmp2 = W, tmp = 0;
-            while ((tmp1 != 0) && (tmp2 != 0))
-            {
-                if (a[tmp1, tmp2] != a[tmp1 - 1, tmp2])
-                {
-                    mangtmp = mangtmp + tmp1 + " ";
-                    tmp++;
-                    GT += listgt[tmp1];
-                    tmp2 -= listtl[tmp1];
-                }
-                tmp1--;
-            }
-        }
-        
+        //    return PartialView("pResultTable");
+        //}
 
         public void UpdateArray(string mangtl, string manggt)
         {
@@ -164,11 +153,6 @@ namespace WebApplication1.Controllers
             {
                 listgt[i + 1] = listgttemp[i];
             }
-        }
-
-        public int Max(int a, int b)
-        {
-            return (a > b) ? a : b;
         }
 
         public void GetAllObjects()
