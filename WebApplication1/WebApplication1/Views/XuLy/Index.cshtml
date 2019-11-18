@@ -13,7 +13,6 @@
             <div>
                 Bài toán cái túi
                 <div class="page-title-subheading">
-                    Cách giải: quy hoạch động
                 </div>
             </div>
         </div>
@@ -28,15 +27,19 @@
                 <div class="card-body">
                     <div>
                         <form class="form-inline">
-                            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                            @*<div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
                                 <label for="exampleEmail22" class="mr-sm-2">Trọng lượng túi</label><input id="trongluong" name="txttrongluong" placeholder="Trọng lượng túi" type="number" class="form-control" required>
-                            </div>
-                            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                            </div>*@
+                            @*<div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
                                 <label for="examplePassword22" class="mr-sm-2">Số lượng vật</label><input id="soluong" name="txtsoluong" placeholder="Số lượng vật" type="number" class="form-control" required>
-                            </div>
+                            </div>*@
                             @*<button id="btnOK" class="btn btn-primary">OK</button>
-                        &nbsp;*@
-                            <button id="btnRandom" class="btn btn-info">Random</button>
+        &nbsp;*@
+                            <button id="btnRandom" class="btn btn-info">Random</button> &nbsp;
+                            <button id="btnDynamic" class="btn btn-info" style="background-color: #ff6384; border-color: #ff6384">Quy hoạch động</button> &nbsp;
+                            <button id="btnGreedy" class="btn btn-info" style="background-color: #36a2eb; border-color: #36a2eb">Tham lam</button> &nbsp;
+                            <button id="btnRecursive" class="btn btn-info" style="background-color: #00cc99; border-color: #00cc99">Trực tiếp</button> &nbsp;
+                            <button id="btnBnB" class="btn btn-info" style="background-color: #ff9933; border-color: #ff9933">Branch and Bound</button>
                         </form>
                     </div>
                 </div>
@@ -60,8 +63,10 @@
 
             </div>
 
-            <div class="main-card mb-3 card" id="row-chart">
-                <canvas id="myChart" style="width: '50%'; height:'50%'"></canvas>
+            <div class="main-card mb-3 card" id="row-chart" style="width: 60%; left: 20%">
+                <center>
+                    <canvas id="myChart" style="width: '50%'; height:'50%'"></canvas>
+                </center>
             </div>
 
 
@@ -168,20 +173,107 @@
                 alert("Error: " + data);
             }
         });
+    });
 
-        //$.ajax({
-        //    url: "/XuLy/RandomDynamicPlanningAlgorithmResult",
-        //    type: "POST",
-        //    data: {
-        //        "txttrongluong": parseInt($("#trongluong").val()),
-        //        "txtsoluong": parseInt($("#soluong").val())
-        //    },
-        //    success: function (data) {
-        //        console.log(data);
-        //    },
-        //    error: function (data) {
-        //        alert("Error: " + data);
-        //    }
-        //});
+    $("#btnDynamic").click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/XuLy/RandomDynamicAlgorithm",
+            type: "POST",
+            success: function (data) {
+                $("#row-ketqua").html(`
+                    <div class="card-body" id="table-ketqua">
+                        ${data}
+                    </div>`);
+
+                $("#row-chart").show();
+            },
+            error: function (data) {
+                alert("Error: " + data);
+            }
+        });
+    });
+
+    $("#btnGreedy").click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/XuLy/RandomGreedyAlgorithm",
+            type: "POST",
+            success: function (data) {
+                $("#row-ketqua").html(`
+                    <div class="card-body" id="table-ketqua">
+                        ${data}
+                    </div>`);
+
+                $("#row-chart").show();
+            },
+            error: function (data) {
+                alert("Error: " + data);
+            }
+        });
+    });
+
+    $("#btnRecursive").click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/XuLy/RandomRecursiveAlgorithm",
+            type: "POST",
+            success: function (data) {
+                $("#row-ketqua").html(`
+                    <div class="card-body" id="table-ketqua">
+                        ${data}
+                    </div>`);
+
+                $("#row-chart").show();
+            },
+            error: function (data) {
+                alert("Error: " + data);
+            }
+        });
+    });
+
+    $("#btnBnB").click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/XuLy/RandomBranchAndBoundAlgorithm",
+            type: "POST",
+            success: function (data) {
+                $("#row-ketqua").html(`
+                    <div class="card-body" id="table-ketqua">
+                        ${data}
+                    </div>`);
+
+                $("#row-chart").show();
+            },
+            error: function (data) {
+                alert("Error: " + data);
+            }
+        });
     });
 </script>
+<style>
+    #btnDynamic:hover
+    {
+        background-color: #ff1a4b !important;
+        border-color: #ff1a4b !important;
+    }
+    #btnGreedy:hover
+    {
+        background-color: #1586d1 !important;
+        border-color: #1586d1 !important;
+    }
+    #btnRecursive:hover
+    {
+        background-color: #008060 !important;
+        border-color: #008060 !important;
+    }
+    #btnBnB:hover
+    {
+        background-color: #e67300 !important;
+        border-color: #e67300 !important;
+    }
+</style>

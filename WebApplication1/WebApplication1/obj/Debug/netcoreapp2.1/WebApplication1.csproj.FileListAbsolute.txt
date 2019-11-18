@@ -102,3 +102,7 @@ C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\WebA
 C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\WebApplication1.pdb
 C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\WebApplication1.csproj.CopyComplete
 C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\WebApplication1.csprojAssemblyReference.cache
+D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pDynamicTable.g.cshtml.cs
+D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pGreedyTable.g.cshtml.cs
+D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pRecursiveTable.g.cshtml.cs
+D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pBranchAndBoundTable.g.cshtml.cs

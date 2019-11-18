@@ -27,11 +27,15 @@ namespace WebApplication1.Controllers
         List<long> dynamicTimeList = new List<long>(); //Mảng chứa thời gian (Dynamic)
         List<long> greedyTimeList = new List<long>(); //Mảng chứa thời gian (Greedy)
         List<long> recursiveTimeList = new List<long>(); //Mảng chứa thời gian (Recursive)
+        List<long> branchAndBoundTimeList = new List<long>(); //Mảng chứa thời gian (Branch and Bound)
+        List<long> backtrackingTimeList = new List<long>(); //Mảng chứa thời gian (Back-tracking)
         List<int> numberOfBags = new List<int>(); //Mảng chứa số lượng túi
 
         GreedyAlgorithm greedyAlgorithm = new GreedyAlgorithm();
         DynamicAlgorithm dynamicAlgorithm = new DynamicAlgorithm();
         RecursiveAlgorithm recursiveAlgorithm = new RecursiveAlgorithm();
+        BranchAndBoundAlgorithm branchAndBoundAlgorithm = new BranchAndBoundAlgorithm();
+        BacktrackingAlgorithm backtrackingAlgorithm = new BacktrackingAlgorithm();
         Stopwatch watch = new Stopwatch();
 
         public IActionResult Index()
@@ -51,6 +55,7 @@ namespace WebApplication1.Controllers
             ViewBag.DynamicTimeList = dynamicTimeList;
             ViewBag.GreedyTimeList = greedyTimeList;
             ViewBag.RecursiveTimeList = recursiveTimeList;
+            ViewBag.BranchAndBoundTimeList = branchAndBoundTimeList;
 
             return PartialView("pResultTable");
         }
@@ -62,7 +67,91 @@ namespace WebApplication1.Controllers
             Random rnd = new Random();
             W = rnd.Next(1, sltemp);
 
-            for (int i = 10; i <= 10000; i *= 10)
+            for (int i = 0; i <= 100; i += 20)
+            {
+                if(i == 0)
+                {
+                    n = 1;
+                }
+                else
+                {
+                    n = i;
+                }
+                a = new int[n + 1, W + 1];
+                RandomArray();
+                RearrangeArray();
+
+                //Dynamic (quy hoạch động)
+                watch = Stopwatch.StartNew();
+                dynamicAlgorithm.HandlingDynamicPlanning(W, n, ref a, listtl, listgt, ref mangtmp, ref GT);
+                watch.Stop();
+                //dynamicTimeList.Add(watch.ElapsedMilliseconds);
+                long ticks = watch.ElapsedTicks;
+                dynamicTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                //Greedy (tham lam)
+                watch = Stopwatch.StartNew();
+                List<KeyValuePair<int, int>> listResultGreedy = listResultGreedy = greedyAlgorithm.KnapsackGreedyProgramming(listtltemp, listgttemp, W);
+                watch.Stop();
+                //greedyTimeList.Add(watch.ElapsedMilliseconds);
+                ticks = watch.ElapsedTicks;
+                greedyTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                //Recursive(vét cạn)
+                watch = Stopwatch.StartNew();
+                int temp = recursiveAlgorithm.KnapSackRecursive(listtltemp, listgttemp, W, n);
+                watch.Stop();
+                //recursiveTimeList.Add(watch.ElapsedMilliseconds);
+                ticks = watch.ElapsedTicks;
+                recursiveTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                //Branch and Bound
+                watch = Stopwatch.StartNew();
+                float branchAndBoundResult = branchAndBoundAlgorithm.KPBranchAndBound(listtltemp, listgttemp, W);
+                watch.Stop();
+                //branchAndBoundTimeList.Add(watch.ElapsedMilliseconds);
+                ticks = watch.ElapsedTicks;
+                branchAndBoundTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                //Back - tracking
+                //watch = Stopwatch.StartNew();
+                //backtrackingAlgorithm.KPBacktracking(0, listtltemp, listgttemp, n, W);
+                //backtrackingAlgorithm.PrintItemInBag(listgttemp, listtltemp, n);
+                //watch.Stop();
+                ////branchAndBoundTimeList.Add(watch.ElapsedMilliseconds);
+                //backtrackingTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                //Lưu sl túi
+                numberOfBags.Add(n);
+            }
+            GetAllObjects();
+        }
+
+        public IActionResult RandomDynamicAlgorithm()
+        {
+            DynamicAlgorithm();
+
+            ViewBag.DanhSachVat = objets;
+            ViewBag.Tong = GT;
+            ViewBag.VatDuocChon = mangtmp;
+
+            ViewBag.SoLuong = numberOfBags;
+            ViewBag.DynamicTimeList = dynamicTimeList;
+            //ViewBag.GreedyTimeList = greedyTimeList;
+            //ViewBag.RecursiveTimeList = recursiveTimeList;
+
+            return PartialView("pDynamicTable");
+        }
+
+        public void DynamicAlgorithm()
+        {
+            int sltemp;
+            int.TryParse(Math.Round(Math.Sqrt(double.Parse(int.MaxValue.ToString())), 0).ToString(), out sltemp); //random W cho túi lớn
+
+            Random rnd = new Random();
+            W = rnd.Next(1, sltemp);
+
+            for (int i = 1; i <= 10000; i *= 10)
             {
                 n = i;
                 a = new int[n + 1, W + 1];
@@ -73,25 +162,185 @@ namespace WebApplication1.Controllers
                 watch = Stopwatch.StartNew();
                 dynamicAlgorithm.HandlingDynamicPlanning(W, n, ref a, listtl, listgt, ref mangtmp, ref GT);
                 watch.Stop();
-                dynamicTimeList.Add(watch.ElapsedMilliseconds);
-                
+                //dynamicTimeList.Add(watch.ElapsedMilliseconds);
+                long ticks = watch.ElapsedTicks;
+                dynamicTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                //Lưu sl túi
+                numberOfBags.Add(i);
+            }
+            GetAllObjects();
+        }
+
+        public IActionResult RandomGreedyAlgorithm()
+        {
+            GreedyAlgorithm();
+
+            ViewBag.DanhSachVat = objets;
+            ViewBag.Tong = GT;
+            ViewBag.VatDuocChon = mangtmp;
+
+            ViewBag.SoLuong = numberOfBags;
+            //ViewBag.DynamicTimeList = dynamicTimeList;
+            ViewBag.GreedyTimeList = greedyTimeList;
+            //ViewBag.RecursiveTimeList = recursiveTimeList;
+
+            return PartialView("pGreedyTable");
+        }
+
+        public void GreedyAlgorithm()
+        {
+            int sltemp;
+            int.TryParse(Math.Round(Math.Sqrt(double.Parse(int.MaxValue.ToString())), 0).ToString(), out sltemp); //random W cho túi lớn
+
+            Random rnd = new Random();
+            W = rnd.Next(1, sltemp);
+
+            for (int i = 1; i <= 10000; i *= 10)
+            {
+                n = i;
+                a = new int[n + 1, W + 1];
+                RandomArray();
+                RearrangeArray();
 
                 //Greedy (tham lam)
                 watch = Stopwatch.StartNew();
                 List<KeyValuePair<int, int>> listResultGreedy = listResultGreedy = greedyAlgorithm.KnapsackGreedyProgramming(listtltemp, listgttemp, W);
                 watch.Stop();
-                greedyTimeList.Add(watch.ElapsedMilliseconds);
+                //greedyTimeList.Add(watch.ElapsedMilliseconds);
+                long ticks = watch.ElapsedTicks;
+                greedyTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
 
-                //Recursive (vét cạn)
-                //watch = Stopwatch.StartNew();
-                //int temp = recursiveAlgorithm.KnapSackRecursive(listtltemp, listgttemp, W, i);
-                
-                //watch.Stop();
-                //recursiveTimeList.Add(watch.ElapsedMilliseconds);
+                this.GT = listResultGreedy.Sum(g => g.Value);
+
+                string tmpArray = "";
+                foreach (var item in listResultGreedy)
+                {
+                    tmpArray += "(" + item.Key + "," + item.Value + ") ";
+                }
+                this.mangtmp = tmpArray;
 
                 //Lưu sl túi
                 numberOfBags.Add(i);
             }
+            GetAllObjects();
+        }
+
+        public IActionResult RandomRecursiveAlgorithm()
+        {
+            RecursiveAlgorithm();
+
+            ViewBag.DanhSachVat = objets;
+            ViewBag.Tong = GT;
+            //ViewBag.VatDuocChon = mangtmp;
+
+            ViewBag.SoLuong = numberOfBags;
+            ViewBag.RecursiveTimeList = recursiveTimeList;
+
+            return PartialView("pRecursiveTable");
+        }
+
+        public void RecursiveAlgorithm()
+        {
+            int sltemp;
+            int.TryParse(Math.Round(Math.Sqrt(double.Parse(int.MaxValue.ToString())), 0).ToString(), out sltemp); //random W cho túi lớn
+
+            Random rnd = new Random();
+            W = rnd.Next(1, sltemp);
+
+            for (int i = 0; i <= 100; i += 20)
+            {
+                if(i == 0)
+                {
+                    n = 1;
+                }
+                else
+                {
+                    n = i;
+                }
+                
+                a = new int[n + 1, W + 1];
+                RandomArray();
+                RearrangeArray();
+
+                //Recursive(vét cạn)
+                watch = Stopwatch.StartNew();
+                int temp = recursiveAlgorithm.KnapSackRecursive(listtltemp, listgttemp, W, n);
+                watch.Stop();
+                //recursiveTimeList.Add(watch.ElapsedMilliseconds);
+                long ticks = watch.ElapsedTicks;
+                recursiveTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                this.GT = temp;
+                //Lưu sl túi
+                numberOfBags.Add(n);
+            }
+
+            GetAllObjects();
+        }
+
+        public IActionResult RandomBranchAndBoundAlgorithm()
+        {
+            BranchAndBoundAlgorithm();
+
+            ViewBag.DanhSachVat = objets;
+            ViewBag.Tong = GT;
+            //ViewBag.VatDuocChon = mangtmp;
+
+            ViewBag.SoLuong = numberOfBags;
+            ViewBag.BranchAndBoundTimeList = branchAndBoundTimeList;
+
+            return PartialView("pBranchAndBoundTable");
+        }
+
+        public void BranchAndBoundAlgorithm()
+        {
+            int sltemp;
+            int.TryParse(Math.Round(Math.Sqrt(double.Parse(int.MaxValue.ToString())), 0).ToString(), out sltemp); //random W cho túi lớn
+
+            Random rnd = new Random();
+            W = rnd.Next(1, sltemp);
+
+            for (int i = 1; i <= 100; i *= 10)
+            {
+                n = i;
+                a = new int[n + 1, W + 1];
+                RandomArray();
+                RearrangeArray();
+
+                //Branch and Bound
+                watch = Stopwatch.StartNew();
+                int branchAndBoundResult = branchAndBoundAlgorithm.KPBranchAndBound(listtltemp, listgttemp, W);
+                watch.Stop();
+                //branchAndBoundTimeList.Add(watch.ElapsedMilliseconds);
+                long ticks = watch.ElapsedTicks;
+                branchAndBoundTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                this.GT = branchAndBoundResult;
+                //Lưu sl túi
+                numberOfBags.Add(i);
+            }
+
+            for (int i = 200; i <= 300; i += 100)
+            {
+                n = i;
+                a = new int[n + 1, W + 1];
+                RandomArray();
+                RearrangeArray();
+
+                //Branch and Bound
+                watch = Stopwatch.StartNew();
+                int branchAndBoundResult = branchAndBoundAlgorithm.KPBranchAndBound(listtltemp, listgttemp, W);
+                watch.Stop();
+                //branchAndBoundTimeList.Add(watch.ElapsedMilliseconds);
+                long ticks = watch.ElapsedTicks;
+                branchAndBoundTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+
+                this.GT = branchAndBoundResult;
+                //Lưu sl túi
+                numberOfBags.Add(i);
+            }
+
             GetAllObjects();
         }
 

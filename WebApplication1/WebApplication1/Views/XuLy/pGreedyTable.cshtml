@@ -44,16 +44,9 @@
                     @for(int i=0; i < sltui; i++)
                     {
                     <p>
-                        @*<span style="font-size: 18px; font-weight: bold">@ViewBag.SoLuong[i] túi:</span>*@
                         <b>@ViewBag.SoLuong[i] túi:</b>
                         <br />
-                        <b style="color: #ff6384">Quy hoạch động:</b> @(ViewBag.DynamicTimeList[i]) &micro;s (@(ViewBag.DynamicTimeList[i] / 1000)ms)
-                        <br />
                         <b style="color: #36a2eb">Tham lam:</b> @(ViewBag.GreedyTimeList[i]) &micro;s (@(ViewBag.GreedyTimeList[i] / 1000)ms)
-                        <br />
-                        <b style="color: #00cc99">Vét cạn:</b> @(ViewBag.RecursiveTimeList[i]) &micro;s (@(ViewBag.RecursiveTimeList[i] / 1000)ms)
-                        <br />
-                        <b style="color: #ff9933">Branch and Bound:</b> @(ViewBag.BranchAndBoundTimeList[i]) &micro;s (@(ViewBag.BranchAndBoundTimeList[i] / 1000)ms)
                         <br />
                     </p>
                     }
@@ -64,14 +57,9 @@
 
     <script>
         var soluongArray = @Html.Raw(Json.Serialize(ViewBag.SoLuong));
-        var dynamicTimeArray = @Html.Raw(Json.Serialize(ViewBag.DynamicTimeList));
         var greedyTimeArray = @Html.Raw(Json.Serialize(ViewBag.GreedyTimeList));
-        var recursiveTimeArray = @Html.Raw(Json.Serialize(ViewBag.RecursiveTimeList));
-        var bnbTimeArray = @Html.Raw(Json.Serialize(ViewBag.BranchAndBoundTimeList));
 
-        //dynamicTimeArray = dynamicTimeArray.map(ele => ele * 1000);
         //greedyTimeArray = greedyTimeArray.map(ele => ele * 1000);
-        //recursiveTimeArray = recursiveTimeArray.map(ele => ele * 1000);
     
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
@@ -79,27 +67,6 @@
             data: {
                 labels: soluongArray,
                 datasets: [
-                {
-                    label: 'Quy hoạch động',
-                    data: dynamicTimeArray,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                },
                 {
                     label: 'Tham lam',
                     data: greedyTimeArray,
@@ -120,49 +87,49 @@
                         'rgba(54, 162, 235, 1)'
                     ],
                     borderWidth: 1
-                },
-                {
-                    label: 'Trực tiếp',
-                    data: recursiveTimeArray,
-                    backgroundColor: [
-                        'rgba(0, 204, 153, 0.2)',
-                        'rgba(0, 204, 153, 0.2)',
-                        'rgba(0, 204, 153, 0.2)',
-                        'rgba(0, 204, 153, 0.2)',
-                        'rgba(0, 204, 153, 0.2)',
-                        'rgba(0, 204, 153, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 204, 153, 1)',
-                        'rgba(0, 204, 153, 1)',
-                        'rgba(0, 204, 153, 1)',
-                        'rgba(0, 204, 153, 1)',
-                        'rgba(0, 204, 153, 1)',
-                        'rgba(0, 204, 153, 1)'
-                    ],
-                    borderWidth: 1
-                },
-                {
-                    label: 'Branch and Bound',
-                    data: bnbTimeArray,
-                    backgroundColor: [
-                        'rgba(255, 153, 51, 0.2)',
-                        'rgba(255, 153, 51, 0.2)',
-                        'rgba(255, 153, 51, 0.2)',
-                        'rgba(255, 153, 51, 0.2)',
-                        'rgba(255, 153, 51, 0.2)',
-                        'rgba(255, 153, 51, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 153, 51, 1)',
-                        'rgba(255, 153, 51, 1)',
-                        'rgba(255, 153, 51, 1)',
-                        'rgba(255, 153, 51, 1)',
-                        'rgba(255, 153, 51, 1)',
-                        'rgba(255, 153, 51, 1)'
-                    ],
-                    borderWidth: 1
                 }
+                //{
+                //    label: 'Tham lam',
+                //    data: greedyTimeArray,
+                //    backgroundColor: [
+                //        'rgba(54, 162, 235, 0.2)',
+                //        'rgba(54, 162, 235, 0.2)',
+                //        'rgba(54, 162, 235, 0.2)',
+                //        'rgba(54, 162, 235, 0.2)',
+                //        'rgba(54, 162, 235, 0.2)',
+                //        'rgba(54, 162, 235, 0.2)'
+                //    ],
+                //    borderColor: [
+                //        'rgba(54, 162, 235, 1)',
+                //        'rgba(54, 162, 235, 1)',
+                //        'rgba(54, 162, 235, 1)',
+                //        'rgba(54, 162, 235, 1)',
+                //        'rgba(54, 162, 235, 1)',
+                //        'rgba(54, 162, 235, 1)'
+                //    ],
+                //    borderWidth: 1
+                //    },
+                //{
+                //    label: 'Vét cạn',
+                //    data: recursiveTimeArray,
+                //    backgroundColor: [
+                //        'rgba(0, 204, 153, 0.2)',
+                //        'rgba(0, 204, 153, 0.2)',
+                //        'rgba(0, 204, 153, 0.2)',
+                //        'rgba(0, 204, 153, 0.2)',
+                //        'rgba(0, 204, 153, 0.2)',
+                //        'rgba(0, 204, 153, 0.2)'
+                //    ],
+                //    borderColor: [
+                //        'rgba(0, 204, 153, 1)',
+                //        'rgba(0, 204, 153, 1)',
+                //        'rgba(0, 204, 153, 1)',
+                //        'rgba(0, 204, 153, 1)',
+                //        'rgba(0, 204, 153, 1)',
+                //        'rgba(0, 204, 153, 1)'
+                //    ],
+                //    borderWidth: 1
+                //}
             ]},
             options: {
                 scales: {
