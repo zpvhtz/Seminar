@@ -106,3 +106,7 @@ D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razo
 D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pGreedyTable.g.cshtml.cs
 D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pRecursiveTable.g.cshtml.cs
 D:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pBranchAndBoundTable.g.cshtml.cs
+C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pBranchAndBoundTable.g.cshtml.cs
+C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pDynamicTable.g.cshtml.cs
+C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pGreedyTable.g.cshtml.cs
+C:\Projects\Seminar\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\Razor\Views\XuLy\pRecursiveTable.g.cshtml.cs

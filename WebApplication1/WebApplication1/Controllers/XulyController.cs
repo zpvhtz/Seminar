@@ -151,7 +151,8 @@ namespace WebApplication1.Controllers
             Random rnd = new Random();
             W = rnd.Next(1, sltemp);
 
-            for (int i = 1; i <= 10000; i *= 10)
+            //for (int i = 1; i <= 10000; i *= 10)
+            for (int i = 0; i <= 100; i += 20)
             {
                 n = i;
                 a = new int[n + 1, W + 1];
@@ -196,7 +197,8 @@ namespace WebApplication1.Controllers
             Random rnd = new Random();
             W = rnd.Next(1, sltemp);
 
-            for (int i = 1; i <= 10000; i *= 10)
+            //for (int i = 1; i <= 10000; i *= 10)
+            for (int i = 0; i <= 100; i += 20)
             {
                 n = i;
                 a = new int[n + 1, W + 1];
@@ -301,7 +303,8 @@ namespace WebApplication1.Controllers
             Random rnd = new Random();
             W = rnd.Next(1, sltemp);
 
-            for (int i = 1; i <= 100; i *= 10)
+            //for (int i = 1; i <= 100; i *= 10)
+            for (int i = 0; i <= 100; i += 20)
             {
                 n = i;
                 a = new int[n + 1, W + 1];
@@ -321,25 +324,25 @@ namespace WebApplication1.Controllers
                 numberOfBags.Add(i);
             }
 
-            for (int i = 200; i <= 300; i += 100)
-            {
-                n = i;
-                a = new int[n + 1, W + 1];
-                RandomArray();
-                RearrangeArray();
+            //for (int i = 200; i <= 300; i += 100)
+            //{
+            //    n = i;
+            //    a = new int[n + 1, W + 1];
+            //    RandomArray();
+            //    RearrangeArray();
 
-                //Branch and Bound
-                watch = Stopwatch.StartNew();
-                int branchAndBoundResult = branchAndBoundAlgorithm.KPBranchAndBound(listtltemp, listgttemp, W);
-                watch.Stop();
-                //branchAndBoundTimeList.Add(watch.ElapsedMilliseconds);
-                long ticks = watch.ElapsedTicks;
-                branchAndBoundTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
+            //    //Branch and Bound
+            //    watch = Stopwatch.StartNew();
+            //    int branchAndBoundResult = branchAndBoundAlgorithm.KPBranchAndBound(listtltemp, listgttemp, W);
+            //    watch.Stop();
+            //    //branchAndBoundTimeList.Add(watch.ElapsedMilliseconds);
+            //    long ticks = watch.ElapsedTicks;
+            //    branchAndBoundTimeList.Add((1000000000 * ticks / Stopwatch.Frequency) / 1000);
 
-                this.GT = branchAndBoundResult;
-                //Lưu sl túi
-                numberOfBags.Add(i);
-            }
+            //    this.GT = branchAndBoundResult;
+            //    //Lưu sl túi
+            //    numberOfBags.Add(i);
+            //}
 
             GetAllObjects();
         }

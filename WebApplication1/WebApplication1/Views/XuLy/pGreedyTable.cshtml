@@ -46,7 +46,7 @@
                     <p>
                         <b>@ViewBag.SoLuong[i] túi:</b>
                         <br />
-                        <b style="color: #36a2eb">Tham lam:</b> @(ViewBag.GreedyTimeList[i]) &micro;s (@(ViewBag.GreedyTimeList[i] / 1000)ms)
+                        <b style="color: #36a2eb">Tham lam:</b> @(ViewBag.GreedyTimeList[i]) &micro;s (@((float)ViewBag.GreedyTimeList[i] / 1000)ms)
                         <br />
                     </p>
                     }

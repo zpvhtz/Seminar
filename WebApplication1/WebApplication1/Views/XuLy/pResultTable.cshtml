@@ -47,13 +47,13 @@
                         @*<span style="font-size: 18px; font-weight: bold">@ViewBag.SoLuong[i] túi:</span>*@
                         <b>@ViewBag.SoLuong[i] túi:</b>
                         <br />
-                        <b style="color: #ff6384">Quy hoạch động:</b> @(ViewBag.DynamicTimeList[i]) &micro;s (@(ViewBag.DynamicTimeList[i] / 1000)ms)
+                        <b style="color: #ff6384">Quy hoạch động:</b> @(ViewBag.DynamicTimeList[i]) &micro;s (@((float)ViewBag.DynamicTimeList[i] / 1000)ms)
                         <br />
-                        <b style="color: #36a2eb">Tham lam:</b> @(ViewBag.GreedyTimeList[i]) &micro;s (@(ViewBag.GreedyTimeList[i] / 1000)ms)
+                        <b style="color: #36a2eb">Tham lam:</b> @(ViewBag.GreedyTimeList[i]) &micro;s (@((float)ViewBag.GreedyTimeList[i] / 1000)ms)
                         <br />
-                        <b style="color: #00cc99">Vét cạn:</b> @(ViewBag.RecursiveTimeList[i]) &micro;s (@(ViewBag.RecursiveTimeList[i] / 1000)ms)
+                        <b style="color: #00cc99">Trực tiếp:</b> @(ViewBag.RecursiveTimeList[i]) &micro;s (@((float)ViewBag.RecursiveTimeList[i] / 1000)ms)
                         <br />
-                        <b style="color: #ff9933">Branch and Bound:</b> @(ViewBag.BranchAndBoundTimeList[i]) &micro;s (@(ViewBag.BranchAndBoundTimeList[i] / 1000)ms)
+                        <b style="color: #ff9933">Branch and Bound:</b> @(ViewBag.BranchAndBoundTimeList[i]) &micro;s (@((float)ViewBag.BranchAndBoundTimeList[i] / 1000)ms)
                         <br />
                     </p>
                     }

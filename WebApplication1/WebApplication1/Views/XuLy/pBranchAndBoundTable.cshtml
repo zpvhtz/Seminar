@@ -47,7 +47,7 @@
                         @*<span style="font-size: 18px; font-weight: bold">@ViewBag.SoLuong[i] túi:</span>*@
                         <b>@ViewBag.SoLuong[i] túi:</b>
                         <br />
-                        <b style="color: #ff9933">Branch and Bound:</b> @(ViewBag.BranchAndBoundTimeList[i]) &micro;s (@(ViewBag.BranchAndBoundTimeList[i] / 1000)ms)
+                        <b style="color: #ff9933">Branch and Bound:</b> @(ViewBag.BranchAndBoundTimeList[i]) &micro;s (@((float)ViewBag.BranchAndBoundTimeList[i] / 1000)ms)
                         <br />
                     </p>
                     }

@@ -47,7 +47,7 @@
                         @*<span style="font-size: 18px; font-weight: bold">@ViewBag.SoLuong[i] túi:</span>*@
                         <b>@ViewBag.SoLuong[i] túi:</b>
                         <br />
-                        <b style="color: #00cc99">Vét cạn:</b> @(ViewBag.RecursiveTimeList[i]) &micro;s (@(ViewBag.RecursiveTimeList[i] / 1000)ms)
+                        <b style="color: #00cc99">Trực tiếp:</b> @(ViewBag.RecursiveTimeList[i]) &micro;s (@((float)ViewBag.RecursiveTimeList[i] / 1000)ms)
                         <br />
                     </p>
                     }
